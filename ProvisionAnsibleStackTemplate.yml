@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  SubnetID:
+    Type: AWS::EC2::Subnet::Id
+    Description: Subnet to deploy EC2 instance into
+  SecurityGroupIDs:
+    Type: List<AWS::EC2::SecurityGroup::Id>
+    Description: List of Security Groups to add to EC2 instance
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: >-
+      Name of an existing EC2 KeyPair to enable SSH access to the instance
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+Mappings:
+  AWSRegionToAMI:
+    us-east-1:
+      AMIID: ami-0a887e401f7654935
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId:
+        !FindInMap
+          - AWSRegionToAMI
+          - !Ref AWS::Region
+          - AMIID
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds: !Ref SecurityGroupIDs
+      SubnetId: !Ref SubnetID
+      UserData:
+        Fn::Base64:
+          !Sub |
+              #!/bin/bash -ex
+              amazon-linux-extras install epel
+              yum update -y
+              yum install ansible -y
+              yum install nginx -y
+              yum install git -y
+              systemctl start nginx
+              systemctl enable nginx
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+              nvm install node
+              cat <<EOF >> /home/ec2-user/.bashrc
+              export NVM_DIR="/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+              EOF
+              cd /home/ec2-user
+              mkdir server && cd server
+              npm install express
+      Tags:
+        -
+          Key: Name
+          Value: Ansible - CloudFormation
+        -
+          Key: Environment
+          Value: Development
