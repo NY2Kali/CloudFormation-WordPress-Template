@@ -8,4 +8,4 @@ Prerequisites:
 - Git
 - Ansible
 
-The Cloudformation Security Group IP uses the permissive default open address. Users are advised to update their Security Group Access with your own IP Address to for greater instance security.
+The Cloudformation Security Group IP uses the permissive default open address. Users are advised to update their Security Group Access with your own IP Address for greater instance security.
