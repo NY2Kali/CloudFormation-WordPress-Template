@@ -1,0 +1,15 @@
+- name: Generate Cloudformation template from Ansible variables
+  template:
+    src: "wordpressCFtemplate.yml.j2"
+    dest: "{{ role_path }}/files/wordpressCFtemplate.yml"
+
+- name: Deploy Wordpress Stack
+  cloudformation:
+    stack_name: "{{ stack_name }}"
+    state: "present"
+    region: "{{ region_name }}"
+    disable_rollback: true
+    template: "{{ role_path }}/files/wordpressCFtemplate.yml"
+  register: cf_ss
+
+- debug: var=cf_ss
