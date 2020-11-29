@@ -1,8 +1,8 @@
 ---
 stack_name: WordpressAnsible
 region_name: us-east-1
-CIDRPrivateSubnet1:	10.0.2.0/24
-CIDRPrivateSubnet2:	10.0.3.0/24
+CIDRPrivateSubnet1: 10.0.2.0/24
+CIDRPrivateSubnet2: 10.0.3.0/24
 CIDRPublicSubnet: 10.0.0.0/24
 CIDRVPC: 10.0.0.0/16
 DBName: wordpress
