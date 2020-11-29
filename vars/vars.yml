@@ -10,5 +10,5 @@ DBPassword: wordpress
 DBUser: wordpress
 EC2InstanceType: t2.micro
 KeyName: staticsitestack
-SSHLocation: 158.222.173.241/0
+SSHLocation: 0.0.0.0/0
 VPCName: WordpressVPC
