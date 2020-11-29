@@ -6,7 +6,7 @@ Prerequisites:
 - VPC available in the selected region (us-east-1)
 - EC2 key pair
 - Git
-- Ansible
+- Ansible playbook
 
 The Cloudformation Security Group IP uses the permissive default open address. Users are advised to update their Security Group Access with your own IP Address for greater instance security.
 
